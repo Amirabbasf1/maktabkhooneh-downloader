@@ -1,0 +1,8 @@
+{
+  "name": "Maktabkhooneh Downloader",
+  "description": "Full-featured web tool and downloader for Maktabkhooneh courses, video lectures, attachments, subtitles, and multi-user sessions.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
