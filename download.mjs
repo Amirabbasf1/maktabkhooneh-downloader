@@ -3,17 +3,12 @@
  * 
  * Usage examples:
  *   node download.mjs "https://maktabkhooneh.org/course/<slug>/" --user you@example.com --pass "Secret123"
- *   node download.mjs "https://maktabkhooneh.org/lms/course/<slug>/unit/<unit_id>/" --user you@example.com --pass "Secret123"
- *   node download.mjs "https://maktabkhooneh.org/course/<slug>/" --sample-bytes 65536 --verbose
  * 
  * Notes: Only download content you have legal rights to access.
  * 
- * @repository https://github.com/NabiKAZ/maktabkhooneh-downloader
- * @author NabiKAZ <https://x.com/NabiKAZ>
+ * @repository https://github.com/Amirabbasf1/maktabkhooneh-downloader
+ * @telegram @amirabbasf_1
  * @license GPL-3.0
- * @created 2025
- * 
- * Copyright(C) 2025 NabiKAZ
  */
 
 import fs from 'fs';
@@ -122,10 +117,9 @@ function ensureCookiePresent() {
 // ===============
 function printUsage() {
     // Header section
-    console.log(`${paintBoldCyan('Maktabkhooneh Downloader')} - ${paintYellow('version 1.0.0')} ${paint(COLOR.dim, '© 2025')}`);
-    console.log(paint(COLOR.magenta, 'By ') + paint(COLOR.magenta, '@NabiKAZ') + ' ' + paintLightBlue('<www.nabi.ir>') + ' ' + paintGreen('<nabikaz@gmail.com>') + ' ' + paintLightBlue('<x.com/NabiKAZ>'));
-    console.log(paint(COLOR.dim, 'Signup: ') + paintLightBlue('https://maktabkhooneh.org/'));
-    console.log(paint(COLOR.dim, 'Project: ') + paintLightBlue('https://github.com/NabiKAZ/maktabkhooneh-downloader'));
+    console.log(`${paintBoldCyan('Maktabkhooneh Downloader')} - ${paintYellow('version 1.0.0')}`);
+    console.log(paint(COLOR.magenta, 'Telegram: ') + paintLightBlue('@amirabbasf_1'));
+    console.log(paint(COLOR.dim, 'Project: ') + paintLightBlue('https://github.com/Amirabbasf1/maktabkhooneh-downloader'));
     console.log(paint(COLOR.dim, '=============================================================\n'));
 
     // Usage
