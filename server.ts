@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ==========================================
-// Session & Cookie Store Helpers
+// توابع کمکی برای مدیریت نشست و کوکی‌ها
 // ==========================================
 interface UserSession {
   cookie: string;
@@ -154,7 +154,7 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutM
   }
 }
 
-// Minimal Cookie Store for login flow
+// شبیه‌ساز ساده یک منبع ذخیره کوکی (فقط برای پروسه لاگین استفاده می‌شود)
 class SimpleCookieStore {
   map = new Map<string, string>();
   setCookieLine(line?: string) {
@@ -272,10 +272,10 @@ async function fetchCoreData(cookie: string | null) {
 }
 
 // ==========================================
-// API Routes
+// مسیرهای API (Endpoints)
 // ==========================================
 
-// 1. Session Status & Profiles
+// ۱. وضعیت نشست و نمای کلی پروفایل کاربر
 app.get('/api/auth/status', async (_req: Request, res: Response) => {
   try {
     const session = await readSession();
@@ -312,7 +312,7 @@ app.get('/api/auth/status', async (_req: Request, res: Response) => {
   }
 });
 
-// 2. Login with Email + Password
+// ۲. ورود با ایمیل و رمز عبور
 app.post('/api/auth/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -454,7 +454,7 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
   }
 });
 
-// 3. Set Manual Cookie
+// ۳. تنظیم دستی کوکی
 app.post('/api/auth/set-cookie', async (req: Request, res: Response) => {
   const { cookie, label = 'manual_cookie' } = req.body;
   if (!cookie || typeof cookie !== 'string' || !cookie.trim()) {
@@ -489,7 +489,7 @@ app.post('/api/auth/set-cookie', async (req: Request, res: Response) => {
   }
 });
 
-// 4. Switch Active User
+// ۴. تغییر کاربر فعال
 app.post('/api/auth/switch-user', async (req: Request, res: Response) => {
   const { email } = req.body;
   const session = await readSession();
@@ -501,7 +501,7 @@ app.post('/api/auth/switch-user', async (req: Request, res: Response) => {
   res.json({ success: true, activeUser: email });
 });
 
-// 5. Delete Stored User Session
+// ۵. حذف یک نشست (خروج کاربر)
 app.delete('/api/auth/user/:email', async (req: Request, res: Response) => {
   const email = (Array.isArray(req.params.email) ? req.params.email[0] : req.params.email) as string;
   const session = await readSession();
@@ -515,7 +515,7 @@ app.delete('/api/auth/user/:email', async (req: Request, res: Response) => {
   res.json({ success: true, remainingUsers: Object.keys(session.users) });
 });
 
-// 6. Course Outline Fetcher
+// ۶. دریافت سرفصل‌ها و دروس یک دوره
 app.post('/api/course/outline', async (req: Request, res: Response) => {
   const { courseUrl } = req.body;
   if (!courseUrl || typeof courseUrl !== 'string') {
@@ -635,7 +635,7 @@ app.post('/api/course/outline', async (req: Request, res: Response) => {
   }
 });
 
-// 7. Unit Details & Video Qualities Inspector
+// ۷. دریافت جزئیات یک درس خاص و استخراج لینک‌های دانلود و کیفیت‌های مختلف ویدیو
 app.post('/api/course/unit-details', async (req: Request, res: Response) => {
   const { unitId, courseUrl, courseSlug, chapter, unit, isNewFormat = true } = req.body;
   const activeCookie = await getActiveCookie();
@@ -775,7 +775,7 @@ app.post('/api/course/unit-details', async (req: Request, res: Response) => {
   }
 });
 
-// 8. Streaming Proxy Download (handles CORS, range seeking, and sample mode)
+// ۸. پروکسی برای استریم و دانلود مستقیم (مدیریت تحریم‌ها یا CORS و دریافت قسمت خاصی از ویدیو)
 app.get('/api/download/proxy', async (req: Request, res: Response) => {
   const { url, filename = 'video.mp4', referer, sampleBytes } = req.query as {
     url?: string;

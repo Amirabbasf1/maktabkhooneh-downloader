@@ -23,7 +23,7 @@ import { pipeline } from 'stream/promises';
 import { setTimeout as sleep } from 'timers/promises';
 
 // ===============
-// Console styling (ANSI colors) and emojis
+// استایل‌دهی به متن ترمینال (رنگ‌ها و ایموجی‌ها)
 // ===============
 const COLOR = {
     reset: '\u001b[0m', bold: '\u001b[1m', dim: '\u001b[2m',
@@ -48,7 +48,7 @@ const logWarn = (...a) => console.warn('⚠️', ...a);
 const logError = (...a) => console.error('❌', ...a);
 
 // ===============
-// Configuration
+// تنظیمات پایه و پیکربندی
 // ===============
 // Cookie: read from env MK_COOKIE or file path in MK_COOKIE_FILE; fallback to placeholder.
 const COOKIE = (() => {
@@ -117,7 +117,9 @@ function ensureCookiePresent() {
     }
 }
 
-// CLI usage
+// ===============
+// توابع مربوط به رابط کاربری خط فرمان (CLI) و راهنما
+// ===============
 function printUsage() {
     // Header section
     console.log(`${paintBoldCyan('Maktabkhooneh Downloader')} - ${paintYellow('version 1.0.0')} ${paint(COLOR.dim, '© 2025')}`);
@@ -236,7 +238,7 @@ function extractCourseIdFromSlug(slug) {
     return m ? parseInt(m[1], 10) : null;
 }
 
-// Fetch with timeout.
+// اجرای یک درخواست شبکه با قابلیت توقف (Timeout) برای جلوگیری از هنگ کردن برنامه
 async function fetchWithTimeout(url, options = {}, timeoutMs = 60_000) {
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), timeoutMs);
@@ -277,8 +279,8 @@ async function getRemoteSizeAndRanges(url, referer) {
     return { size: undefined, acceptRanges: false };
 }
 
-// API: fetch chapters JSON for a course.
-// Tries the new LMS outline API first (needs numeric course id), then falls back to the old chapters API.
+// API: دریافت اطلاعات سرفصل‌ها و درس‌های یک دوره.
+// ابتدا از API جدید LMS تلاش می‌کند و در صورت عدم موفقیت از API قدیمی استفاده می‌کند.
 async function fetchChapters(courseSlug, referer, courseId) {
     // New API: /api/v1/lms/courses/<id>/outline/
     if (courseId) {
@@ -429,8 +431,8 @@ function extractAttachmentLinks(html) {
     return Array.from(results);
 }
 
-// --- Session / Login helpers ---
-// --- Multi-user session file helpers ---
+// --- توابع کمکی مربوط به لاگین و نشست (Session) ---
+// ساختار فایل نشست (چند کاربره):
 // Structure:
 // {
 //   "users": { "email@example.com": { "cookie": "csrftoken=..; sessionid=..", "updated": "ISO" }, ... },
@@ -765,8 +767,8 @@ class ByteLimit extends Transform {
     }
 }
 
-// Download a URL to a file (with retries). If sampleBytes > 0, request a Range and also enforce a local limit.
-// label: optional display name to show in the progress line (e.g., final file name)
+// دانلود یک آدرس URL و ذخیره در فایل (با قابلیت تلاش مجدد).
+// اگر sampleBytes مشخص شده باشد، فقط مقدار محدودی دانلود می‌شود تا سریع‌تر تست شود.
 async function downloadToFile(url, filePath, referer, maxRetries = 3, sampleBytes = 0, label = '') {
     // Skip if already exists with non-zero size
     let existingFinalSize = 0;
